@@ -1,6 +1,8 @@
-# Getting Started with Create React App
+# Org for work
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- Organise tasks in a tree structure
+- Add useful information
+- View in other ways, such as tasks available to work on (filterable by context), or tasks planned for today
 
 ## Available Scripts
 
