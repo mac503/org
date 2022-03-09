@@ -1,0 +1,1 @@
+export const mapObject = (object, callback) => Object.fromEntries(Object.entries(object).map(([key, value]) => [key, callback(value, key)]));

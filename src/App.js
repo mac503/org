@@ -1,9 +1,7 @@
 import './App.scss';
+import {AppProvider} from "./state/AppProvider";
+import {RootNode} from "./components/nodes/RootNode";
 
-function App() {
-  return (
-    <></>
-  );
-}
-
-export default App;
+export const App = () => <AppProvider>
+    <RootNode />
+</AppProvider>;
