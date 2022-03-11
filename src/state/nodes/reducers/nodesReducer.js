@@ -1,9 +1,10 @@
 import {createReducer} from "../../../helpers/createReducer";
-import {updateNodeContent} from "./nodeReducer";
+import {toggleComplete, updateNodeContent} from "./nodeReducer";
 
 export const ROOT_NODE = 'ROOT_NODE';
 
 export const UPDATE_NODE_CONTENT = 'UPDATE_NODE_CONTENT';
+export const TOGGLE_NODE_IS_COMPLETE = 'TOGGLE_NODE_IS_COMPLETE';
 
 const EMPTY_NODE = {
     content: '',
@@ -46,5 +47,9 @@ export const nodesReducer = createReducer(initialState, {
     [UPDATE_NODE_CONTENT]: (state, {id, content}) => ({
         ...state,
         [id]: updateNodeContent(state[id], content),
+    }),
+    [TOGGLE_NODE_IS_COMPLETE]: (state, {id}) => ({
+        ...state,
+        [id]: toggleComplete(state[id]),
     }),
 });

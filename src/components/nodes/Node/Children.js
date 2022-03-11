@@ -9,9 +9,7 @@ export const Children = ({parentId}) => {
     return <ul className={"children"}>
         {
             children && children.map((id) =>
-                <li key={id}>
-                    <Node id={id} />
-                </li>
+                <Node key={id} id={id} />
             )
         }
     </ul>

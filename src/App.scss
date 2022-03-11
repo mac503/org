@@ -2,6 +2,17 @@
     & :focus {
         background-color: lightblue;
     }
+
+    & .isComplete {
+        list-style-type: '🗹  ';
+        & > .content {
+            text-decoration: line-through;
+        }
+        opacity: 0.5;
+        .node {
+            opacity: 1;
+        }
+    }
 }
 
 .content {

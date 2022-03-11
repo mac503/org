@@ -2,7 +2,18 @@ import React from "react";
 import {useNode} from "../../../state/nodes/hooks/useNode";
 import ContentEditable from "react-contenteditable";
 import {useNodesDispatch} from "../../../state/nodes/hooks/useNodesDispatch";
-import {UPDATE_NODE_CONTENT} from "../../../state/nodes/reducers/nodesReducer";
+import {TOGGLE_NODE_IS_COMPLETE, UPDATE_NODE_CONTENT} from "../../../state/nodes/reducers/nodesReducer";
+import {CTRL, ENTER} from "../../../helpers/getActionCreatorFromKeyDown";
+import {dispatchActionFromKeyDown} from "../../../helpers/dispatchActionFromKeyDown";
+
+const nodesKeyToActionMap = {
+    [CTRL]: {
+        [ENTER]: ({id}) => ({
+            type: TOGGLE_NODE_IS_COMPLETE,
+            id,
+        }),
+    },
+};
 
 export const Content = ({id}) => {
     const {content} = useNode(id);
@@ -16,6 +27,7 @@ export const Content = ({id}) => {
             id,
             content: e.target.value,
         })}
+        onKeyDown={dispatchActionFromKeyDown([nodesKeyToActionMap, nodesDispatch, {id}])}
         tagName={'span'}
     />;
 };
