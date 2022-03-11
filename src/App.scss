@@ -1,3 +1,13 @@
+.node {
+    & :focus {
+        background-color: lightblue;
+    }
+}
+
+.content {
+    outline: 0px solid transparent;
+}
+
 ul.children {
     border-left: 1px solid grey;
     margin-left: calc(-1em + 1px);
