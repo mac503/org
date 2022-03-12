@@ -10,6 +10,7 @@ export const TOGGLE_NODE_IS_COMPLETE = 'TOGGLE_NODE_IS_COMPLETE';
 const EMPTY_NODE = {
     content: '',
     isComplete: false,
+    estimate: 0,
     children: []
 };
 
