@@ -16,7 +16,9 @@
 }
 
 .content {
+    display: inline-block;
     outline: 0px solid transparent;
+    min-width: 1px;
 }
 
 ul.children {

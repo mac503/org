@@ -3,6 +3,7 @@ import {toggleComplete, updateNodeContent} from "./nodeReducer";
 
 export const ROOT_NODE = 'ROOT_NODE';
 
+export const CREATE_NODE = 'CREATE_NODE';
 export const UPDATE_NODE_CONTENT = 'UPDATE_NODE_CONTENT';
 export const TOGGLE_NODE_IS_COMPLETE = 'TOGGLE_NODE_IS_COMPLETE';
 
@@ -52,4 +53,21 @@ export const nodesReducer = createReducer(initialState, {
         ...state,
         [id]: toggleComplete(state[id]),
     }),
+    [CREATE_NODE]: (state, {newId, parentId, previousSiblingId}) => {
+        const parentNode = state[parentId];
+
+        const indexOfNewNodeInSiblings = parentNode.children.indexOf(previousSiblingId);
+
+        const newSiblings = [...parentNode.children];
+        newSiblings.splice(indexOfNewNodeInSiblings + 1, 0, newId);
+
+        return {
+            ...state,
+            [parentId]: {
+                ...state[parentId],
+                children: newSiblings,
+            },
+            [newId]: EMPTY_NODE,
+        };
+    }
 });
