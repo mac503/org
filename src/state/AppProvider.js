@@ -1,5 +1,5 @@
 import React from 'react';
-import {NodesProvider} from "./nodes/NodesContext";
+import {NodesContextStorageChangeListener, NodesProvider} from "./nodes/NodesContext";
 import {UiProvider} from "./ui/UiContext";
 
 const combineComponents = (...components) => components.reduce(
@@ -12,5 +12,6 @@ const combineComponents = (...components) => components.reduce(
 
 export const AppProvider = combineComponents(
     NodesProvider,
+    NodesContextStorageChangeListener,
     UiProvider,
 );

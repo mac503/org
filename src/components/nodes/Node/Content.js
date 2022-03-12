@@ -10,13 +10,15 @@ import {useUiDispatch} from "../../../state/ui/hooks/useUiDispatch";
 import {v4 as uuid} from "uuid";
 import {getNextVisibleNodeId} from "../../../helpers/getVisibleNodeIds";
 import {useNodes} from "../../../state/nodes/hooks/useNodes";
+import {useThrottle} from "../../../helpers/useThrottle";
 
 const useNodesKeyToActionMap = () => {
-    const nodesDispatch = useNodesDispatch();
     const uiDispatch = useUiDispatch();
 
     return {
-        [ENTER]: ({id, nodes}) => {
+        [ENTER]: ({id, nodes, flushContentRef}) => {
+            flushContentRef.current();
+
             let newId;
 
             do {
@@ -29,7 +31,12 @@ const useNodesKeyToActionMap = () => {
 
             const createAsChild = nextVisibleNodeId === node.children[0];
 
-            nodesDispatch({
+            uiDispatch({
+                type: SELECT_NODE,
+                id: newId,
+            });
+
+            return {
                 type: CREATE_NODE,
                 newId,
                 parentId: createAsChild
@@ -38,14 +45,8 @@ const useNodesKeyToActionMap = () => {
                 previousSiblingId: createAsChild
                     ? null
                     : id,
-            });
+            };
 
-            uiDispatch({
-                type: SELECT_NODE,
-                id: newId,
-            });
-
-            return {};
         },
             [CTRL]: {
             [ENTER]: ({id}) => ({
@@ -72,6 +73,17 @@ export const Content = ({id}) => {
     const nodes = useNodes();
     const nodesKeyToActionMap = useNodesKeyToActionMap();
 
+    const [throttledUpdateContent, flushContentRef] = useThrottle(
+        (e) => {
+            nodesDispatch({
+                type: UPDATE_NODE_CONTENT,
+                id,
+                content: e.target.value,
+            })
+        },
+        400
+    );
+
     // Use this hack to force ContentEditable to rerender when the children of the current node change, to force it to pick up the new value of `nodesKeyToActionMap`
     const [placeholder, setPlaceholder] = useState(true);
     useEffect(() => {
@@ -86,13 +98,9 @@ export const Content = ({id}) => {
             type: SELECT_NODE,
             id,
         })}
-        onChange={(e) => nodesDispatch({
-            type: UPDATE_NODE_CONTENT,
-            id,
-            content: e.target.value,
-        })}
+        onChange={(e) => throttledUpdateContent(e)}
         onKeyDown={dispatchActionFromKeyDown(
-            [nodesKeyToActionMap, nodesDispatch, {id, nodes}],
+            [nodesKeyToActionMap, nodesDispatch, {id, nodes, flushContentRef}],
             [uiKeyToActionMap, uiDispatch, {}],
         )}
         tagName={'span'}
