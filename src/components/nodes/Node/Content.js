@@ -3,7 +3,7 @@ import {useNode} from "../../../state/nodes/hooks/useNode";
 import ContentEditable from "react-contenteditable";
 import {useNodesDispatch} from "../../../state/nodes/hooks/useNodesDispatch";
 import {CREATE_NODE, TOGGLE_NODE_IS_COMPLETE, UPDATE_NODE_CONTENT} from "../../../state/nodes/reducers/nodesReducer";
-import {UP, DOWN, CTRL, ENTER} from "../../../helpers/getActionCreatorFromKeyDown";
+import {UP, DOWN, CTRL, ENTER, SHIFT} from "../../../helpers/getActionCreatorFromKeyDown";
 import {dispatchActionFromKeyDown} from "../../../helpers/dispatchActionFromKeyDown";
 import {SELECT_NODE, MOVE_UP, MOVE_DOWN} from "../../../state/ui/reducers/selectedNodeReducer";
 import {useUiDispatch} from "../../../state/ui/hooks/useUiDispatch";
@@ -48,7 +48,7 @@ const useNodesKeyToActionMap = () => {
             };
 
         },
-            [CTRL]: {
+        [CTRL + SHIFT]: {
             [ENTER]: ({id}) => ({
                 type: TOGGLE_NODE_IS_COMPLETE,
                 id,
