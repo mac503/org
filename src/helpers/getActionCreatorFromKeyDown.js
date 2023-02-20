@@ -8,6 +8,7 @@ export const UP = 38;
 export const RIGHT = 39;
 export const DOWN = 40;
 export const PLUS = 187;
+export const TAB = 9;
 
 export const getActionCreatorFromKeyDown = ({keyCode, ctrlKey, shiftKey, altKey}, keyToActionMap) => {
     if (ctrlKey && shiftKey && altKey) {

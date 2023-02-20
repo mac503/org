@@ -6,6 +6,7 @@ export const ROOT_NODE = 'ROOT_NODE';
 export const CREATE_NODE = 'CREATE_NODE';
 export const UPDATE_NODE_CONTENT = 'UPDATE_NODE_CONTENT';
 export const TOGGLE_NODE_IS_COMPLETE = 'TOGGLE_NODE_IS_COMPLETE';
+export const MOVE_NODE = 'MOVE_NODE';
 
 const EMPTY_NODE = {
     content: '',
@@ -70,5 +71,36 @@ export const nodesReducer = createReducer(initialState, {
             },
             [newId]: EMPTY_NODE,
         };
-    }
+    },
+    [MOVE_NODE]: (state, {id, newParentId, newPreviousSiblingId}) => {
+        const [oldParentId, oldParentNode] = Object.entries(state).find(([, node]) => node.children.includes(id));
+
+        const oldSiblings = [...oldParentNode.children];
+        const indexOfIdInOldSiblings = oldSiblings.indexOf(id);
+        oldSiblings.splice(indexOfIdInOldSiblings, 1);
+
+        const newParentNode = state[newParentId];
+
+        const newSiblings = [...newParentNode.children];
+        const indexOfNewPreviousSiblingIdInInSiblings = newSiblings.indexOf(newPreviousSiblingId);
+        newSiblings.splice(
+            -1 === indexOfNewPreviousSiblingIdInInSiblings
+                ? newSiblings.length
+                : indexOfNewPreviousSiblingIdInInSiblings,
+0,
+            id
+        );
+
+        return {
+            ...state,
+            [oldParentId]: {
+                ...oldParentNode,
+                children: oldSiblings,
+            },
+            [newParentId]: {
+                ...newParentNode,
+                children: newSiblings,
+            },
+        };
+    },
 });

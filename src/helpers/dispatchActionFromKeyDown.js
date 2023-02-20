@@ -8,6 +8,8 @@ export const dispatchActionFromKeyDown = (...actionSets) => (e) => {
         if (actionCreator) {
             dispatch(actionCreator(namedArgs, e));
 
+            console.log('yo');
+
             e.preventDefault();
             e.stopPropagation();
 
